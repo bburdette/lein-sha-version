@@ -14,11 +14,10 @@
                                    (build))
         ^ObjectId head (.resolve repository "HEAD")]
     (if head
-      (let [abbr (.abbreviate head (:length sha 17))]
-        (debug "Found SHA" (.name head) "using" (.name abbr))
-        (.name abbr))
+      (.name head)
       version)))
 
 (defn middleware
   [project]
-  (assoc project :manifest { "Implementation-Version" (git-sha project)}))
+  (let [sha (git-sha project)]
+    (assoc project :manifest { "Implementation-Version" sha })))
